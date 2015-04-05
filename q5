@@ -1,0 +1,67 @@
+section .data
+		op1: db 'Pessoal-1', 0Ah
+		str_len1: equ $-op1
+ 
+		op2: db 'Pesquisar planos-2', 0Ah
+		str_len2: equ $-op2
+		aux: db 0
+
+		op3: db 'Consultas-3', 0Ah
+		str_len3: equ $-op3
+		aux1: db 0
+
+		sub1: db 'Cancelar contrato-1\nSolicitar contrato-2', 0Ah
+		str_len4: equ $-sub1
+		saux: db 0
+ 
+ 
+section .bss
+		nop1:  resb 2 ; reserva 2 byte para numero
+		nop2: resb 2
+ 
+ 
+section .text
+global _start
+ 
+_start:
+ 
+	mov eax, 4                  
+	mov ebx, 1
+	mov ecx, op1 ; pessoal-1
+	mov edx, str_len1
+	int 80h
+ 
+ 	mov eax, 4 
+	mov ebx, 1
+	mov ecx, op2 ; pesquisar planos-2
+	mov edx, str_len2
+	int 80h
+
+	mov eax, 4 
+	mov ebx, 1
+	mov ecx, op3 ; consultas-3
+	mov edx, str_len3
+	int 80h
+
+	mov eax, 3 
+	mov ebx, 0
+	mov ecx, nop1 ; salva o nop1
+	mov edx, 2
+	int 80h
+
+	mov eax, [nop1]
+	mov ebx, 1
+	cmp ax, bx
+ 	je opc1 
+ 
+exit:mov eax, 1
+	mov ebx, 0
+	int 80h
+
+opc1: mov eax, 4                  
+	mov ebx, 1
+	mov ecx, sub1 ; subopcoes de 1
+	mov edx, str_len4
+	int 80h
+	jmp exit
+ 
